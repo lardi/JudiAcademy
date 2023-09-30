@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 
 export default CourseCardComponent = ({ course, onPress }) => {
     // Extract the featured image URL; set a default or fallback if needed
@@ -10,10 +10,28 @@ export default CourseCardComponent = ({ course, onPress }) => {
 
     return(
         <TouchableOpacity onPress={() => onPress(course)}>
-            <View>
-                {featuredImageUrl && <Image source={{ uri: featuredImageUrl }} style={{ width: 100, height: 100 }} />}
-                <Text>{course.title.rendered}</Text>
+            <View style={styles.container}>
+                {featuredImageUrl && <Image source={{ uri: featuredImageUrl }} style={styles.image} />}
+                <View style={styles.details}>
+                    <Text>{course.title.rendered}</Text>
+                </View>
             </View>
         </TouchableOpacity>
     );
 };
+
+const styles = StyleSheet.create({
+    details: {
+        width: 150,
+        paddingHorizontal: 15
+    },
+    container: {
+        flexDirection: 'row'
+    },
+    image: {
+        width: 100,
+        height: 100,
+        borderRadius: 15,
+        flex: 1
+    }
+})

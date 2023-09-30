@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, FlatList, Modal, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, Modal, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { fetchCourses } from '../services/WPService';
 import CourseCardComponent from '../components/CourseCardComponent';
+import CourseDescriptionModal from './modals/CourseDescriptionModal';
+import cat from '../constants/courseCategories';
+import tags from '../constants/courseTags';
+
 
 
 export default CoursesListComponent = () => {
@@ -25,6 +29,31 @@ export default CoursesListComponent = () => {
         getCourses();
     }, []);
 
+    // Function to get parent tag for a given course
+    const getParentTag = (course) => {
+        const courseTags = course.ld_course_tag;
+        for (let tagId of courseTags) {
+            if (tags.parent[tagId]) {
+                return tagId; // Return the first parent tag ID found
+            }
+        }
+        return null;
+    };
+
+    // Nested grouping: first by category and then by parent tag
+    const groupedByCategoryAndTag = courses.reduce((grouped, course) => {
+        const category = course.ld_course_category[0];
+        const parentTagId = getParentTag(course);
+        
+        if (!grouped[category]) {
+            grouped[category] = {};
+        }
+        if (parentTagId) {
+            (grouped[category][parentTagId] = grouped[category][parentTagId] || []).push(course);
+        }
+        return grouped;
+    }, {});
+
     if (loading) {
         return <Text>Loading...</Text>;
     }
@@ -33,46 +62,45 @@ export default CoursesListComponent = () => {
         return <Text>Error: {error.message}</Text>;
     }
 
-    function stripHtmlTags(str) {
-        if (!str || typeof str !== 'string') return '';
-    
-        // Remove HTML tags
-        str = str.replace(/<\/?[^>]+(>|$)/g, "");
-        return str.replace("&#8217;", "'");
-    }
-
     return (
-        <View>
-            <FlatList
-                data={courses}
-                keyExtractor={course => course.id.toString()}
-                renderItem={({ item }) => (
-                    <CourseCardComponent 
-                        course={item} 
-                        onPress={selected => setSelectedCourse(selected)} 
-                    />
-                )}
-            />
-                        {selectedCourse && (
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={!!selectedCourse}
-                    onRequestClose={() => {
-                        setSelectedCourse(null);
-                    }}
-                >
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <View style={{ width: '80%', padding: 20, backgroundColor: 'white', borderRadius: 10 }}>
-                            <Text>{selectedCourse.title.rendered}</Text>
-                            <Text>{stripHtmlTags(selectedCourse.content.rendered)}</Text>
-                            <TouchableOpacity onPress={() => setSelectedCourse(null)} style={{ alignSelf: 'center', marginTop: 20 }}>
-                                <Text>Close</Text>
-                            </TouchableOpacity>
-                        </View>
+        <View style={{flex: 1}}>
+            <ScrollView>
+                {Object.keys(groupedByCategoryAndTag).map(category => (
+                    <View key={category} style={{ marginBottom: 20 }}>
+                        {/* This is the category header */}
+                        <Text style={styles.categoryHeader}>{cat[category] || category}</Text>
+    
+                        {/* Render each tag and its courses within this category */}
+                        {Object.keys(groupedByCategoryAndTag[category]).map(tagId => (
+                            <View style={{flex: 1, marginTop: 10}} key={tagId}>
+                                <Text style={styles.section}>{tags.parent[tagId]}</Text>
+                                <FlatList
+                                    horizontal={true}
+                                    data={groupedByCategoryAndTag[category][tagId]}
+                                    keyExtractor={course => course.id.toString()}
+                                    renderItem={({ item }) => (
+                                        <CourseCardComponent 
+                                            course={item} 
+                                            onPress={selected => setSelectedCourse(selected)} 
+                                        />
+                                    )}
+                                />
+                            </View>
+                        ))}
                     </View>
-                </Modal>
-            )}
+                ))}
+    
+                {selectedCourse && (
+                    <CourseDescriptionModal course={selectedCourse} onClose={() => setSelectedCourse(null)} />
+                )}
+            </ScrollView>
         </View>
     );
-}
+};
+
+const styles = StyleSheet.create({
+    section: {
+        fontWeight: 'bold',
+        fontSize: 18 
+    }
+})
