@@ -46,7 +46,7 @@ export const getUserInfo = async (token) => {
 
 // Add more API calls as needed.
 export const fetchCourses = async () => {
-    const endpoint = `${WP_BASE_URL}/ldlms/v1/sfwd-courses?_embed`;
+    const endpoint = `${WP_BASE_URL}/ldlms/v1/sfwd-courses?_embed&per_page=100`;
 
     const response = await fetch(endpoint, {
         method: 'GET',

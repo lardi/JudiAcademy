@@ -13,7 +13,7 @@ export default CourseCardComponent = ({ course, onPress }) => {
             <View style={styles.container}>
                 {featuredImageUrl && <Image source={{ uri: featuredImageUrl }} style={styles.image} />}
                 <View style={styles.details}>
-                    <Text>{course.title.rendered}</Text>
+                    <Text style={styles.title}>{course.title.rendered}</Text>
                 </View>
             </View>
         </TouchableOpacity>
@@ -26,12 +26,16 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15
     },
     container: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        margin: 15
     },
     image: {
-        width: 100,
+        width: 150,
         height: 100,
-        borderRadius: 15,
+        borderRadius: 10,
         flex: 1
+    },
+    title: {
+        fontSize: 18
     }
 })

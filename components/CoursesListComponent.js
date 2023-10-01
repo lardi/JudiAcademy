@@ -99,8 +99,15 @@ export default CoursesListComponent = () => {
 };
 
 const styles = StyleSheet.create({
+    categoryHeader: {
+        fontSize: 22,
+        backgroundColor: '#049f82',
+        color: '#fff',
+        padding: 15
+    },
     section: {
         fontWeight: 'bold',
-        fontSize: 18 
+        fontSize: 18,
+        padding: 15
     }
 })
