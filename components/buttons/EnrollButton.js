@@ -1,33 +1,13 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, ProgressBarAndroid, StyleSheet } from 'react-native';
+import { Text } from 'react-native';
+import useIsEnrolled from '../../hooks/useIsEnrolled';
 
-function EnrollButton({ isEnrolled, progress, onEnroll }) {
-    if (isEnrolled) {
-        return (
-            <View style={styles.progressBarContainer}>
-                <ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={progress} />
-            </View>
-        );
-    }
+export default EnrollButton = ({courseId}) => {
+  const isEnrolled = useIsEnrolled(courseId);
 
-    return (
-        <TouchableOpacity onPress={onEnroll} style={styles.enrollButton}>
-            <Text>Roll</Text>
-        </TouchableOpacity>
-    );
+  return (
+    <Text>
+      {isEnrolled ? "You are enrolled in this course!" : "You are not enrolled in this course."}
+    </Text>
+  );
 }
-
-const styles = StyleSheet.create({
-    enrollButton: {
-        marginTop: 10,
-        padding: 10,
-        backgroundColor: 'skyblue',
-        borderRadius: 5,
-        alignItems: 'center'
-    },
-    progressBarContainer: {
-        marginTop: 10,
-    }
-});
-
-export default EnrollButton;

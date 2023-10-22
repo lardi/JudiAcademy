@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState , useContext } from "react";
 import { View, Text, FlatList, Modal, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { fetchCourses } from '../services/WPService';
+import CourseContext from '../contexts/CourseContext';
 import CourseCardComponent from '../components/CourseCardComponent';
 import CourseDescriptionModal from './modals/CourseDescriptionModal';
 import cat from '../constants/courseCategories';
@@ -9,25 +9,13 @@ import tags from '../constants/courseTags';
 
 
 export default CoursesListComponent = () => {
-    const [courses, setCourses] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const { courses, loading } = useContext(CourseContext);
     const [error, setError] = useState(null);
     const [selectedCourse, setSelectedCourse] = useState(null);  // Store the selected course
 
-    useEffect(() => {
-        const getCourses = async () => {
-            try {
-                const coursesData = await fetchCourses();
-                setCourses(coursesData);
-                setLoading(false);
-            } catch (error) {
-                setError(error);
-                setLoading(false);
-            }
-        };
-
-        getCourses();
-    }, []);
+    if (loading) {
+        return <Text>Loading courses...</Text>;
+    }    
 
     // Function to get parent tag for a given course
     const getParentTag = (course) => {

@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { View, Text, Modal, StyleSheet, TouchableOpacity, Image, Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
+import EnrollButton from '../buttons/EnrollButton';
 
 export default function CourseDescriptionModal({ course, onClose }) {
     function stripHtmlTags(str) {
@@ -64,6 +65,7 @@ export default function CourseDescriptionModal({ course, onClose }) {
                         <Text>{stripHtmlTags(course.content.rendered)}</Text>
                         <TouchableOpacity onPress={onClose} style={{ alignSelf: 'center', marginTop: 20 }}>
                             <Text>Close</Text>
+                            <EnrollButton courseId={course.id} />
                         </TouchableOpacity>
                     </Animated.View>
                 </PanGestureHandler>

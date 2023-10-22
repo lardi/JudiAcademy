@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View, StyleSheet, Button } from 'react-native';
 import Modal from 'react-native-modal';
-import { login, getUserInfo } from '../../services/WPService';
+import { login, getUserInfo, getUserEnrolledCourses } from '../../services/WPService'; // Added getUserEnrolledCourses
 import * as SecureStore from 'expo-secure-store';
 
 
@@ -35,11 +35,17 @@ const LoginModal = ({ setIsLoggedIn, setUserData }) => {
             if (response && response.token) {
                 await SecureStore.setItemAsync('userToken', response.token);
                 const userInfo = await getUserInfo(response.token);
-                // Now, store this fetched userInfo to SecureStore
-                await SecureStore.setItemAsync('userData', JSON.stringify(userInfo));
+            
+                const enrolledCourses = await getUserEnrolledCourses(response.token, userInfo.id); 
+                const combinedUserData = {
+                    ...userInfo,
+                    userEnrolledCourses: enrolledCourses
+                };
+            
+                await SecureStore.setItemAsync('userData', JSON.stringify(combinedUserData));
                 setIsLoggedIn(true);
-                setUserData(userInfo);
-                toggleModal();
+                setUserData(combinedUserData);
+                toggleModal();            
             } else {
                 // Handle other potential errors or situations.
             }

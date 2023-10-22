@@ -64,4 +64,31 @@ export const fetchCourses = async () => {
     }
 };
 
-// Add other API calls as needed
+
+export const getUserEnrolledCourses = async (token, userId) => {
+    const endpoint = `${WP_BASE_URL}/ldlms/v1/users/${userId}/courses`;
+    const response = await fetch(endpoint, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        return data;
+    } else {
+        const data = await response.json();
+        throw new Error(data.message || 'Failed to fetch enrolled courses');
+    }
+};
+
+export const getUserCompleteInfo = async (token) => {
+    const userInfo = await getUserInfo(token);
+    const enrolledCourses = await getUserEnrolledCourses(token, userInfo.id);
+    return {
+        ...userInfo,
+        enrolledCourses
+    };
+};
