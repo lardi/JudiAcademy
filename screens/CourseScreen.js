@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import NoInternetComponent from '../../components/NoInternetComponent';
-import CoursesListComponent from '../../components/CoursesListComponent';
+import NoInternetComponent from '../components/NoInternetComponent';
+import CoursesListComponent from '../components/CoursesListComponent';
 
 export default function CoursesScreen() {
   const [isConnected, setIsConnected] = useState(true);

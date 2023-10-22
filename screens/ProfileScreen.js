@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import StudentDashboardComponent from '../../components/StudentDashboardComponent';
+import StudentDashboardComponent from '../components/StudentDashboardComponent';
 
 const VERSION_NUMBER = "1.0.0";  // Adjust this to your actual version number.
 

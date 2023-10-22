@@ -1,7 +1,7 @@
 // NoInternetComponent.js
 import React, {useEffect} from 'react';
 import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
-import useNetwork from '../hooks/useNetwork.js';
+import useNetwork from '../hooks/useNetwork';
 import IMAGES from '../constants/Images.js';
 
 const NoInternetComponent = ({ onConnectionChange }) => {

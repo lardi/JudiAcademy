@@ -1,7 +1,7 @@
 // MyLearningScreen.js
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import NoInternetComponent from '../../components/NoInternetComponent';
+import { View, Text } from 'react-native';
+import NoInternetComponent from '../components/NoInternetComponent';
 
 export default function MyLearningScreen() {
 
