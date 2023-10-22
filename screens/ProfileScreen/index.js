@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import LoginComponent from '../../components/LoginComponent';
-import DashboardComponent from '../../components/DashboardComponent';
+import StudentDashboardComponent from '../../components/StudentDashboardComponent';
 
 const VERSION_NUMBER = "1.0.0";  // Adjust this to your actual version number.
 
@@ -33,7 +32,7 @@ const ProfileScreen = () => {
         onPress={() => navigation.navigate('contact')}>
         <Text style={styles.itemText}>Contact Us</Text>
       </TouchableOpacity>
-      <DashboardComponent />
+      <StudentDashboardComponent />
       <Text style={styles.version}>Version {VERSION_NUMBER}</Text>
     </View>
   );

@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, Image } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import LoginComponent from './LoginComponent';
+import LoginModal from './modals/LoginModal';
 
-const Dashboard = () => {
+const StudentDashboardComponent = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userData, setUserData] = useState(null);
 
@@ -34,13 +34,14 @@ const Dashboard = () => {
         return (
             <View style={{ alignItems: 'center' }}>
                 <Image source={{ uri: userData.photoURL }} style={{ width: 100, height: 100, borderRadius: 50 }} />
+                {console.log(userData)}
                 <Text>{userData.name}</Text>
                 <Button title="Logout" onPress={handleLogout} />
             </View>
         );
     } else {
-        return <LoginComponent setIsLoggedIn={setIsLoggedIn} setUserData={setUserData} />;
+        return <LoginModal setIsLoggedIn={setIsLoggedIn} setUserData={setUserData} />;
     }
 };
 
-export default Dashboard;
+export default StudentDashboardComponent;

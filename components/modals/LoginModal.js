@@ -1,13 +1,13 @@
-//LoginComponent.js
+//LoginModal.js
 import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View, StyleSheet, Button } from 'react-native';
 import Modal from 'react-native-modal';
-import { login, getUserInfo } from '../services/WPService';
+import { login, getUserInfo } from '../../services/WPService';
 import * as SecureStore from 'expo-secure-store';
 
 
 
-const LoginComponent = ({ setIsLoggedIn, setUserData }) => {
+const LoginModal = ({ setIsLoggedIn, setUserData }) => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -182,5 +182,5 @@ errorText: {
     }
 });
 
-export default LoginComponent;
+export default LoginModal;
 
